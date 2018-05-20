@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-int m[50][501];
+int m[50][50];
 
 void init(){
 	int i=0;
@@ -18,6 +18,7 @@ void print(int n, int capacity){
 	int i=0;
 	int j=0;
 	for (i;i<n;i++){
+		j=0;
 		for (j; j<capacity; j++){
 			printf("%d  ",m[i][j]);		
 		}
@@ -68,14 +69,14 @@ int knapsackMemoized(int capacity, int mass[], int profit[], int n, int m[n][cap
 int knapsackDynamic(int capacity, int mass[], int profit[], int n, int m[n][capacity]){
 	int i = 0;
 	int j = 0;
-	for (i; i<=n; i++){
-		for (j; j<=capacity; j++){
-			if (i==0 || j == 0){
+	for (i=0; i<=n; i++){
+		j=0;
+		for (j=0; j<=capacity; j++){
+			
+			if (j == 0){
 				m[i][j]=0;
 			}
-			if (mass[i]<=j){
-				
-			
+			else if (mass[i]<=j){
 				int new_capacity = j - mass[i];
 				int take = profit[i] + m[i-1][new_capacity];
 				int leave = m[i-1][j];
@@ -85,6 +86,9 @@ int knapsackDynamic(int capacity, int mass[], int profit[], int n, int m[n][capa
 				else{
 					m[i][j]=take;
 				}
+			}
+			if (mass[i]>j){
+				m[i][j]=m[i-1][j];
 			}
 			
 		
@@ -98,7 +102,7 @@ void main(){
 	int profit[10] = {45,40,25,15};
 	int n=4;
 	int capacity = 5;
-	
+	/*
 	int max_rec = knapsackRec(capacity, mass,profit,n);
 	printf("max_rec=%d\n",max_rec);
 	
@@ -106,8 +110,10 @@ void main(){
 	init();
 	int max_memo=knapsackMemoized(capacity,mass,profit,n,m);
 	printf("max_memo=%d\n",max_memo);
-	
+	*/
 	init();
+	print(4,5);
 	int max_dyn=knapsackDynamic(capacity,mass,profit,n,m);
 	printf("max_dyn=%d\n",max_dyn);
+	print(4,5);
 }
